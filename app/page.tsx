@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import HomeworkForm from '@/components/HomeworkForm';
 import AssignmentList from '@/components/AssignmentList';
+import GoogleCalendarButton from '@/components/GoogleCalendarButton';
 import { Assignment } from '@/lib/types';
 import { storageUtils } from '@/lib/storage';
 import { generateStudyPlan } from '@/lib/studyPlanGenerator';
@@ -66,6 +67,10 @@ export default function Home() {
           <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">
             Transform your homework chaos into an optimized 7-day study plan
           </p>
+        </div>
+
+        <div className="mb-8 flex justify-center">
+          <GoogleCalendarButton />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-10">

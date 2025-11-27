@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { Assignment } from '@/lib/types';
 import { formatDate, formatDaysUntilDue, getDaysUntilDue } from '@/lib/dateUtils';
+import SyncButton from './SyncButton';
 
 interface AssignmentListProps {
   assignments: Assignment[];
@@ -109,6 +111,18 @@ export default function AssignmentList({ assignments, onDelete }: AssignmentList
                   <p className="text-sm text-slate-300 leading-relaxed">{assignment.notes}</p>
                 </div>
               )}
+
+              <div className="mt-3 pt-3 border-t border-slate-700/30">
+                <SyncButton
+                  assignmentId={assignment.id}
+                  isSynced={!!assignment.googleEventId}
+                  onSyncSuccess={(eventId) => {
+                    // Update the assignment in the list
+                    assignment.googleEventId = eventId;
+                    assignment.syncedAt = new Date().toISOString();
+                  }}
+                />
+              </div>
             </div>
           </div>
         ))}
