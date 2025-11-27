@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-space-accent to-space-glow text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-space-glow/50;
+  }
+
+  .btn-secondary {
+    @apply bg-space-medium text-white font-semibold py-2 px-4 rounded-lg border border-space-light transition-all duration-300 hover:border-space-glow hover:shadow-md hover:shadow-space-glow/30;
+  }
+
+  .card {
+    @apply bg-gradient-to-br from-space-medium to-space-light p-6 rounded-xl border border-space-light/50 backdrop-blur-sm transition-all duration-300 hover:border-space-glow/50 hover:shadow-xl hover:shadow-space-glow/20;
+  }
+
+  .input-field {
+    @apply w-full bg-space-dark border border-space-light rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-space-glow focus:ring-2 focus:ring-space-glow/30 transition-all duration-300;
+  }
+
+  .difficulty-badge {
+    @apply inline-block px-3 py-1 rounded-full text-xs font-semibold;
+  }
+}
