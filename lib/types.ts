@@ -9,6 +9,8 @@ export interface Assignment {
   dueDate: string;
   notes: string;
   createdAt: string;
+  googleEventId?: string | null;
+  syncedAt?: string | null;
 }
 
 export interface DailyTask {

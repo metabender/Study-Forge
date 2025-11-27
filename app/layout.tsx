@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import SessionProvider from '@/components/SessionProvider'
 
 export const metadata: Metadata = {
   title: 'StudyForge — AI Homework Organizer',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <SessionProvider>{children}</SessionProvider>
+      </body>
     </html>
   )
 }
