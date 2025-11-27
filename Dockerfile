@@ -1,10 +1,12 @@
 FROM node:18-alpine AS base
 
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
+COPY prisma ./prisma/
+
 RUN npm ci
 
 FROM base AS builder
