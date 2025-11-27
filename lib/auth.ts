@@ -3,15 +3,6 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
 
-// Validate critical environment variables
-if (!process.env.NEXTAUTH_SECRET) {
-  throw new Error('NEXTAUTH_SECRET is not set');
-}
-
-if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-  console.warn('⚠️  Google OAuth credentials not configured. Sign-in will not work.');
-}
-
 // Determine the application URL
 const getAppUrl = (): string => {
   // 1. Use NEXTAUTH_URL if explicitly set
@@ -33,8 +24,27 @@ const getAppUrl = (): string => {
   return `http://localhost:${process.env.PORT || 3000}`;
 };
 
-const APP_URL = getAppUrl();
-console.log('🔐 NextAuth configured with URL:', APP_URL);
+// Runtime validation (only log warnings during build)
+const validateEnvVars = () => {
+  if (typeof window === 'undefined') { // Server-side only
+    const APP_URL = getAppUrl();
+
+    if (!process.env.NEXTAUTH_SECRET) {
+      console.error('❌ CRITICAL: NEXTAUTH_SECRET is not set');
+    } else {
+      console.log('🔐 NextAuth configured with URL:', APP_URL);
+    }
+
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+      console.warn('⚠️  Google OAuth credentials not configured. Sign-in will not work.');
+    }
+  }
+};
+
+// Run validation only at runtime, not during build
+if (process.env.NODE_ENV !== 'production' || process.env.RAILWAY_STATIC_URL) {
+  validateEnvVars();
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -97,7 +107,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'build-time-placeholder-secret',
   session: {
     strategy: 'database',
     maxAge: 30 * 24 * 60 * 60, // 30 days
