@@ -1,4 +1,5 @@
 import { Assignment, StudyPlan, DailyTask, DayOfWeek } from './types';
+import { getDaysUntilDue } from './dateUtils';
 
 const DAYS: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -12,9 +13,7 @@ const difficultyScore = (difficulty: string): number => {
 };
 
 const calculateUrgency = (dueDate: string): number => {
-  const now = new Date();
-  const due = new Date(dueDate);
-  const daysUntilDue = Math.ceil((due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  const daysUntilDue = getDaysUntilDue(dueDate);
 
   if (daysUntilDue <= 1) return 10;
   if (daysUntilDue <= 2) return 8;
@@ -76,9 +75,7 @@ export const generateStudyPlan = (assignments: Assignment[]): StudyPlan => {
   });
 
   sortedAssignments.forEach(assignment => {
-    const dueDate = new Date(assignment.dueDate);
-    const now = new Date();
-    const daysUntilDue = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    const daysUntilDue = getDaysUntilDue(assignment.dueDate);
 
     let targetDayIndex = 0;
 
